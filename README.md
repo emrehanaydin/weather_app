@@ -47,3 +47,4 @@ python manage.py runserver
 - PostgreSQL
 - HTML
 - CSS
+- Java Script
