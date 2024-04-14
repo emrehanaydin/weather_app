@@ -65,3 +65,5 @@ class RequestLoggingMiddleware(MiddlewareMixin):
             RequestLog(**data).save()
         except Exception as error:
             logger.error(error)
+
+        return response
