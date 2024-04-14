@@ -1,8 +1,11 @@
 Weather App
+
 Introduction
+
 This is a simple Django application that allows users to check the weather information for different locations. Users can add new locations and view the current weather data for those locations.
 
 Features
+
 User Authentication: Users can register, login, and logout. Only authenticated users can add new locations and view weather information.
 Location Management: Authenticated users can add new locations to the database.
 Weather Information: The application fetches weather information from an external API and displays it to the user.
