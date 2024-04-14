@@ -1,4 +1,6 @@
 from django.contrib.auth.models import User
+from django.shortcuts import render
+from weather_app import settings
 from .models import Location, WeatherData
 from .serializer import LocationSerializer, UserSerializer, WeatherSerializer, WeatherDataSerializer
 from rest_framework import status, generics
@@ -7,11 +9,11 @@ from rest_framework.response import Response
 import requests
 
 
+
 class WeatherAPIView(APIView):
     def get(self, request, location_name):
         try:
-            api_key = "1af6561134174f2fa44225449240804"
-            url = f"https://api.weatherapi.com/v1/current.json?key={api_key}&q={location_name}"
+            url = f"{settings.WEATHER_API_URL}{location_name}"
             response = requests.get(url)
 
             if response.status_code == 200:
@@ -44,9 +46,12 @@ class WeatherAPIView(APIView):
 
 
 
-class LocationListView(generics.ListAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
+class LocationListView(APIView):
+    def get(self, request):
+        locations = Location.objects.all()
+        context = {"locations": locations}
+
+        return render(request, "city_query.html", context)
 
 
 class LocationDetailView(generics.RetrieveAPIView):

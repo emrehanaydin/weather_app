@@ -13,10 +13,5 @@ class Migration(migrations.Migration):
         migrations.RemoveField(
             model_name='weatherdata',
             name='location',
-        ),
-        migrations.AddField(
-            model_name='weatherdata',
-            name='location_name',
-            field=models.CharField(max_length=100, null=True),
-        ),
+        )
     ]

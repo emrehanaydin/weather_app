@@ -5,6 +5,9 @@ from django.utils.deprecation import MiddlewareMixin
 from django.utils import timezone
 from weather.models import RequestLog
 from django.contrib.auth.models import User
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class RequestLoggingMiddleware(MiddlewareMixin):
@@ -15,26 +18,29 @@ class RequestLoggingMiddleware(MiddlewareMixin):
         self.user_reqeusts = {}
 
     def process_request(self, request):
-        user = request.user
-        if not user:
-            return {"message": "User Not Found"}, 504
+        try:
+            user = request.user
+            if not user:
+                return {"message": "User Not Found"}, 504
 
-        user_name = user.username
-        path = request.path
-        key = f"{user_name}&&{path}"
+            user_name = user.username
+            path = request.path
+            key = f"{user_name}&&{path}"
 
-        if not user_name in self.user_reqeusts:
-            self.user_reqeusts[key] = {}
+            if not user_name in self.user_reqeusts:
+                self.user_reqeusts[key] = {}
 
-        self.user_reqeusts[key] = dict(
-            user=User.objects.get(username=user_name),
-            path=path,
-            method=request.method,
-            ip_address=request.META.get('REMOTE_ADDR', ''),
-            user_agent=request.META.get('HTTP_USER_AGENT', ''),
-            requested_at=timezone.now(),
-            request_body=""
-        )
+            self.user_reqeusts[key] = dict(
+                user=User.objects.get(username=user_name),
+                path=path,
+                method=request.method,
+                ip_address=request.META.get('REMOTE_ADDR', ''),
+                user_agent=request.META.get('HTTP_USER_AGENT', ''),
+                requested_at=timezone.now(),
+                request_body=""
+            )
+        except Exception as error:
+            logger.error(error)
 
     def process_response(self, request, response):
         try:
@@ -45,6 +51,7 @@ class RequestLoggingMiddleware(MiddlewareMixin):
 
             user_name = user.username
             path = request.path
+
             key = f"{user_name}&&{path}"
 
             self.user_reqeusts[key].update(
@@ -53,6 +60,5 @@ class RequestLoggingMiddleware(MiddlewareMixin):
             )
             data = self.user_reqeusts.pop(key)
             RequestLog(**data).save()
-        except:
-            pass
-        return response
+        except Exception as error:
+            logger.error(error)

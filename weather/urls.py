@@ -7,4 +7,5 @@ urlpatterns = [
     path('api/admin/location/', LocationListView.as_view()),
     path('api/admin/location/<int:pk>/', LocationDetailView.as_view()),
     path('weather/<str:location_name>/', WeatherAPIView.as_view(), name='weather'),
+    path('locations/', LocationListView.as_view(), name='location-list'),
 ]

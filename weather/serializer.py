@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, generics
 from weather.models import User, Location, WeatherData
 
 
@@ -12,13 +12,18 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'authority')
 
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ('id', 'name')
-
 class WeatherDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeatherData
         fields = ['temperature_celsius', 'temperature_fahrenheit', 'condition_text']
 
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ('id', 'name')
+
+
+class LocationListView(generics.ListAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
