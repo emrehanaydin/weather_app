@@ -1,0 +1,25 @@
+() {'verbosity': 1, 'settings': None, 'pythonpath': None, 'traceback': False, 'no_color': False, 'force_color': False, 'addrport': None, 'use_ipv6': False, 'use_threading': True, 'use_reloader': True, 'skip_checks': False, 'use_static_handler': True, 'insecure_serving': False}
+Performing system checks...
+
+System check identified no issues (0 silenced).
+
+            SELECT
+                c.relname,
+                CASE
+                    WHEN c.relispartition THEN 'p'
+                    WHEN c.relkind IN ('m', 'v') THEN 'v'
+                    ELSE 't'
+                END,
+                obj_description(c.oid, 'pg_class')
+            FROM pg_catalog.pg_class c
+            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE c.relkind IN ('f', 'm', 'p', 'r', 'v')
+                AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+                AND pg_catalog.pg_table_is_visible(c.oid)
+        
+April 14, 2024 - 07:31:57
+Django version 5.0.4, using settings 'weather_app.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+() {'verbosity': 1, 'settings': None, 'pythonpath': None, 'traceback': False, 'no_color': False, 'force_color': False, 'addrport': None, 'use_ipv6': False, 'use_threading': True, 'use_reloader': True, 'skip_checks': False, 'use_static_handler': True, 'insecure_serving': False}
