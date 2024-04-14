@@ -12,3 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Projeyi /code/ içine kopyala
 COPY . /code/
+
+
+RUN python manage.py makemigrations
+RUN python manage.py migrate
