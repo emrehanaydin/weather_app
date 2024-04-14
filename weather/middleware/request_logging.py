@@ -1,11 +1,14 @@
 # request_logging.py
-import json
+from __future__ import annotations
 
-from django.utils.deprecation import MiddlewareMixin
-from django.utils import timezone
-from weather.models import RequestLog
-from django.contrib.auth.models import User
+import json
 import logging
+
+from django.contrib.auth.models import User
+from django.utils import timezone
+from django.utils.deprecation import MiddlewareMixin
+
+from weather.models import RequestLog
 
 logger = logging.getLogger(__name__)
 
@@ -21,13 +24,13 @@ class RequestLoggingMiddleware(MiddlewareMixin):
         try:
             user = request.user
             if not user:
-                return {"message": "User Not Found"}, 504
+                return {'message': 'User Not Found'}, 504
 
             user_name = user.username
             path = request.path
-            key = f"{user_name}&&{path}"
+            key = f'{user_name}&&{path}'
 
-            if not user_name in self.user_reqeusts:
+            if user_name not in self.user_reqeusts:
                 self.user_reqeusts[key] = {}
 
             self.user_reqeusts[key] = dict(
@@ -37,7 +40,7 @@ class RequestLoggingMiddleware(MiddlewareMixin):
                 ip_address=request.META.get('REMOTE_ADDR', ''),
                 user_agent=request.META.get('HTTP_USER_AGENT', ''),
                 requested_at=timezone.now(),
-                request_body=""
+                request_body='',
             )
         except Exception as error:
             logger.error(error)
@@ -47,16 +50,16 @@ class RequestLoggingMiddleware(MiddlewareMixin):
 
             user = request.user
             if not user:
-                return {"message": "User Not Found"}, 504
+                return {'message': 'User Not Found'}, 504
 
             user_name = user.username
             path = request.path
 
-            key = f"{user_name}&&{path}"
+            key = f'{user_name}&&{path}'
 
             self.user_reqeusts[key].update(
                 response_body=json.dumps(response.data),
-                response_at=timezone.now()
+                response_at=timezone.now(),
             )
             data = self.user_reqeusts.pop(key)
             RequestLog(**data).save()

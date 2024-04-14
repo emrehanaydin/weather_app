@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 from django.contrib.auth.models import User as auth_user
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+from django.db import models
+
 
 class User(models.Model):
     id = models.IntegerField(primary_key=True)
     username = models.CharField(max_length=255, unique=True)
     password = models.CharField(max_length=255)
-    authority = models.CharField(max_length=255, choices=(('admin', 'Admin'), ('standard', 'Standard')))
+    authority = models.CharField(max_length=255, choices=(
+        ('admin', 'Admin'), ('standard', 'Standard')))
 
 
 class RequestLog(models.Model):
@@ -23,7 +25,7 @@ class RequestLog(models.Model):
     response_at = models.DateTimeField(null=True)
 
     def __str__(self):
-        return f"{self.method} {self.path}"
+        return f'{self.method} {self.path}'
 
 
 class Location(models.Model):
@@ -42,4 +44,4 @@ class WeatherData(models.Model):
     update_at = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
-        return f"{self.temperature_celsius}°C, {self.condition_text}"
+        return f'{self.temperature_celsius}°C, {self.condition_text}'

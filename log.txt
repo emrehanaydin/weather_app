@@ -16,7 +16,7 @@ System check identified no issues (0 silenced).
             WHERE c.relkind IN ('f', 'm', 'p', 'r', 'v')
                 AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
                 AND pg_catalog.pg_table_is_visible(c.oid)
-        
+
 April 14, 2024 - 07:31:57
 Django version 5.0.4, using settings 'weather_app.settings'
 Starting development server at http://127.0.0.1:8000/

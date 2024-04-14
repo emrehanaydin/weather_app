@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+from __future__ import annotations
+
 import os
 from pathlib import Path
 
@@ -24,7 +26,7 @@ SECRET_KEY = 'django-insecure-e=ckoi&=7#=_p_vh8944ljwtrcq@trzmp$bh%lop&#*np!&n7s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -37,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'weather_app',
-    'weather'
+    'weather',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -90,7 +92,7 @@ DATABASES = {
         'PASSWORD': '300718cc',
         'HOST': 'localhost',
         'PORT': '5432',
-    }
+    },
 }
 
 # Password validation
@@ -133,4 +135,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
-WEATHER_API_URL = f"https://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q="
+WEATHER_API_URL = f'https://api.weatherapi.com/v1/current.json?key={WEATHER_API_KEY}&q='

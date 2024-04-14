@@ -1,5 +1,11 @@
-from rest_framework import serializers, generics
-from weather.models import User, Location, WeatherData
+from __future__ import annotations
+
+from rest_framework import generics
+from rest_framework import serializers
+
+from weather.models import Location
+from weather.models import User
+from weather.models import WeatherData
 
 
 class WeatherSerializer(serializers.Serializer):
@@ -15,7 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
 class WeatherDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = WeatherData
-        fields = ['temperature_celsius', 'temperature_fahrenheit', 'condition_text']
+        fields = ['temperature_celsius',
+                  'temperature_fahrenheit', 'condition_text']
 
 
 class LocationSerializer(serializers.ModelSerializer):
